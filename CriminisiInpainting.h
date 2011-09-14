@@ -108,6 +108,9 @@ public:
   // Specify alpha
   void SetAlpha(const float);
 
+  // Specify beta
+  void SetBeta(const float);
+  
   // Compute the confidence values for pixels that were just inpainted.
   void UpdateConfidences(const itk::ImageRegion<2>&);
   
@@ -129,8 +132,11 @@ public:
   // Get the current isophote image
   FloatVector2ImageType::Pointer GetIsophoteImage();
 
-  // Get the current data image
-  FloatScalarImageType::Pointer GetDataImage();
+  // Get the current color data image
+  FloatScalarImageType::Pointer GetColorDataImage();
+  
+  // Get the current depth data image
+  FloatScalarImageType::Pointer GetDepthDataImage();
   
   // Get the current mask image
   Mask::Pointer GetMaskImage();
@@ -245,9 +251,7 @@ private:
   // Store the list of source patches computed with ComputeSourcePatches()
   std::vector<itk::ImageRegion<2> > SourcePatches;
   
-  bool DebugImages;
-  bool DebugMessages;
-  void DebugMessage(const std::string&);
+
   
   template <typename T>
   void DebugMessage(const std::string& message, T value);
@@ -255,15 +259,27 @@ private:
   // This member tracks the current iteration. This is only necessary to help construct useful filenames for debugging outputs from anywhere in the class.
   unsigned int Iteration;
   
-  // This is the denominator of the data term expression.
+  // This is the relateive weight of the ColorData term in the Priority calculation
   float Alpha;
   
+  // This is the relateive weight of the DepthData term in the Priority calculation
+  float Beta;
+  
+  // This flag can be set whiel the algorithm is running to tell it to stop at the end of the current iteration.
   bool Stop;
   
-  bool UseConfidence;
-  bool UseData;
-  
+  // This variable determines which Difference subclass is instantiated.
   int DifferenceType;
+  
+  //// Debugging ////
+  // Should we output images at every iteration?
+  bool DebugImages;
+  
+  // Should we output verbose information about what is happenening at every iteration?
+  bool DebugMessages;
+  
+  // Output a message if DebugMessages is set to true.
+  void DebugMessage(const std::string&);
 };
 
 #include "CriminisiInpainting.hxx"

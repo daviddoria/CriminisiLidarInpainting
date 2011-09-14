@@ -193,6 +193,11 @@ void CriminisiInpainting::SetAlpha(const float alpha)
   this->Alpha = alpha;
 }
 
+void CriminisiInpainting::SetBeta(const float beta)
+{
+  this->Beta = beta;
+}
+
 void CriminisiInpainting::ExpandMask()
 {
   // Expand the mask - this is necessary to prevent the isophotes from being undefined in the target region
@@ -885,22 +890,13 @@ float CriminisiInpainting::ComputePriority(const itk::Index<2>& queryPixel)
   //double confidence = ComputeConfidenceTerm(queryPixel);
   //double data = ComputeDataTerm(queryPixel);
 
-  if(this->DebugMessages)
-    {
-    //std::cout << "UseConfidence: " << this->UseConfidence << " UseData: " << this->UseData << std::endl;
-    }
+  float confidence = this->ConfidenceImage->GetPixel(queryPixel);
+  float colorData = this->ColorDataImage->GetPixel(queryPixel);
+  float depthData = this->DepthDataImage->GetPixel(queryPixel);
 
-  float priority = 1.0;
-  if(this->UseConfidence)
-    {
-    float confidence = this->ConfidenceImage->GetPixel(queryPixel);
-    priority *= confidence;
-    }
-  if(this->UseData)
-    {
-    float data = this->DataImage->GetPixel(queryPixel);
-    priority *= data;
-    }
+  float priority = confidence + 
+		   this->Alpha * colorData +
+		   this->Beta * depthData;
 
   return priority;
 }

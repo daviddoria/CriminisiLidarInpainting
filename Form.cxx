@@ -591,7 +591,7 @@ void Form::on_btnInpaint_clicked()
   this->Inpainting.SetDebugMessages(this->chkDebugMessages->isChecked());
   this->Inpainting.SetImage(this->Image);
   this->Inpainting.SetMask(this->MaskImage);
-  this->Inpainting.SetAlpha(this->sldAlpha->value());
+  this->Inpainting.SetAlpha(10.* this->sldAlpha->value() / 100.);
   this->Inpainting.SetUseConfidence(this->chkUseConfidence->isChecked());
   this->Inpainting.SetUseData(this->chkUseData->isChecked());
   
