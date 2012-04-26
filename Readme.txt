@@ -1,3 +1,5 @@
+** This project has been abandoned in favor of this one: https://github.com/daviddoria/PatchBasedInpainting **
+
 This software allows the user to inpaint an image using a texture synthesis based method.
 This implementation is based on "Object Removal By Exemplar Based Inpainting" by A. Criminisi.
 
